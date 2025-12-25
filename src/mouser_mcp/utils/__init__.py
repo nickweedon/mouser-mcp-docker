@@ -1,1 +1,1 @@
-"""Utility modules for the Skeleton MCP Server."""
+"""Utility modules for the Mouser MCP Server."""

@@ -1,4 +1,4 @@
-# Skeleton MCP Server Dockerfile
+# Mouser MCP Server Dockerfile
 # Multi-stage build with manual file filtering for production
 
 # Stage 1: Copy all source files (no .dockerignore filtering)
@@ -90,7 +90,7 @@ RUN uv sync --frozen --no-dev 2>/dev/null || uv sync --no-dev
 FROM base AS production
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
-CMD ["uv", "run", "skeleton-mcp"]
+CMD ["uv", "run", "mouser-mcp"]
 
 # Stage 5: Development stage with all files and additional tools
 FROM python:3.12-slim AS development

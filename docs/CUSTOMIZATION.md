@@ -1,16 +1,16 @@
 # Customization Guide
 
-This guide explains how to customize the skeleton MCP server for your specific use case.
+This guide explains how to customize the Mouser MCP server for your specific use case.
 
 ## Step 1: Rename the Project
 
 1. **Rename the package directory**:
    ```bash
-   mv src/skeleton_mcp src/your_project_name
+   mv src/mouser_mcp src/your_project_name
    ```
 
 2. **Update pyproject.toml**:
-   - Change `name = "skeleton-mcp"` to your project name
+   - Change `name = "mouser-mcp"` to your project name
    - Update the description, authors, and keywords
    - Update the script entry point:
      ```toml
@@ -24,7 +24,7 @@ This guide explains how to customize the skeleton MCP server for your specific u
      ```
 
 3. **Update imports in all Python files**:
-   - `server.py`: Update imports from `skeleton_mcp` to `your_project_name`
+   - `server.py`: Update imports from `mouser_mcp` to `your_project_name`
    - `api/__init__.py`: Update imports
    - Test files: Update imports
 

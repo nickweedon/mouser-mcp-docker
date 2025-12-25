@@ -130,7 +130,7 @@ class ResourceData(TypedDict):
 ### Running the Server
 
 ```bash
-uv run skeleton-mcp
+uv run mouser-mcp
 ```
 
 ### Running Tests
