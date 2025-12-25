@@ -3,6 +3,10 @@ services:
     build:
       context: .
       target: production
+    image: mouser-mcp:latest
+    container_name: mouser-mcp-server
+    stdin_open: true
+    tty: true      
     env_file:
       - .env
     ports:
