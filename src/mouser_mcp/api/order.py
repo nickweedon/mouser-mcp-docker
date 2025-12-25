@@ -56,10 +56,10 @@ async def get_order(order_number: str) -> dict[str, Any]:
         raise ValueError("Order number cannot be empty")
 
     client = get_client()
-    payload = {"OrderNumber": order_number}
 
     try:
-        response = client.post("order/get", json=payload)
+        # Per Mouser API docs: GET /api/v{version}/order/{orderNumber}
+        response = client.get(f"order/{order_number}")
         return response
     except Exception as e:
         raise RuntimeError(f"Failed to get order: {e}") from e

@@ -28,7 +28,8 @@ async def get_cart(cart_key: str) -> dict[str, Any]:
     client = get_client()
 
     try:
-        response = client.get(f"cart/{cart_key}")
+        # Per Mouser API docs: GET /api/v{version}/cart with cartKey as query param
+        response = client.get("cart", params={"cartKey": cart_key})
         return response
     except Exception as e:
         raise RuntimeError(f"Failed to retrieve cart: {e}") from e
@@ -79,7 +80,8 @@ async def add_to_cart(
     }
 
     try:
-        response = client.post(f"cart/{cart_key}/insert", json=payload)
+        # Per Mouser API docs: POST /api/v{version}/cart/items/insert
+        response = client.post("cart/items/insert", json=payload)
         return response
     except Exception as e:
         raise RuntimeError(f"Failed to add item to cart: {e}") from e
@@ -127,7 +129,8 @@ async def update_cart_item(
     }
 
     try:
-        response = client.post(f"cart/{cart_key}/update", json=payload)
+        # Per Mouser API docs: POST /api/v{version}/cart/items/update
+        response = client.post("cart/items/update", json=payload)
         return response
     except Exception as e:
         raise RuntimeError(f"Failed to update cart item: {e}") from e

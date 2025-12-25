@@ -2,6 +2,10 @@
 
 This document provides context and guidelines for Claude when working with this Mouser Electronics MCP server project.
 
+## API Documentation
+
+Look at docs/api-guide.pdf for information on API usage. Also consult the online Mouser API documentation.
+
 ## ⚠️ CRITICAL: Research Approach
 
 **ALWAYS use the Playwright MCP server for web research when working on this project.**

@@ -67,50 +67,54 @@ class APIClient:
         self.session = requests.Session()
         self.session.headers["Content-Type"] = "application/json"
 
-    def _set_api_key_header(self, endpoint: str) -> None:
-        """Set the appropriate API key header based on the endpoint."""
-        # Clear any existing API key headers
-        self.session.headers.pop("SearchApi-Key", None)
-        self.session.headers.pop("OrderApi-Key", None)
-
-        # Set the correct key based on endpoint
+    def _get_api_key(self, endpoint: str) -> str:
+        """Get the appropriate API key based on the endpoint."""
+        # Search endpoints use part_api_key, everything else uses order_api_key
         if "/search/" in endpoint:
-            if self.part_api_key:
-                self.session.headers["SearchApi-Key"] = self.part_api_key
+            return self.part_api_key
         else:
             # Cart, Order, OrderHistory use order key
-            if self.order_api_key:
-                self.session.headers["OrderApi-Key"] = self.order_api_key
+            return self.order_api_key
 
     def get(self, endpoint: str, params: dict[str, Any] | None = None) -> dict[str, Any]:
         """Make a GET request to the Mouser API."""
-        self._set_api_key_header(endpoint)
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
+        # Add API key as query parameter
+        if params is None:
+            params = {}
+        params["apiKey"] = self._get_api_key(endpoint)
+
         response = self.session.get(url, params=params, timeout=self.timeout)
         response.raise_for_status()
         return response.json()
 
     def post(self, endpoint: str, json: dict[str, Any] | None = None) -> dict[str, Any]:
         """Make a POST request to the Mouser API."""
-        self._set_api_key_header(endpoint)
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
-        response = self.session.post(url, json=json, timeout=self.timeout)
+        # Add API key as query parameter
+        params = {"apiKey": self._get_api_key(endpoint)}
+
+        response = self.session.post(url, params=params, json=json, timeout=self.timeout)
         response.raise_for_status()
         return response.json()
 
     def put(self, endpoint: str, json: dict[str, Any] | None = None) -> dict[str, Any]:
         """Make a PUT request to the Mouser API."""
-        self._set_api_key_header(endpoint)
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
-        response = self.session.put(url, json=json, timeout=self.timeout)
+        # Add API key as query parameter
+        params = {"apiKey": self._get_api_key(endpoint)}
+
+        response = self.session.put(url, params=params, json=json, timeout=self.timeout)
         response.raise_for_status()
         return response.json()
 
     def delete(self, endpoint: str) -> dict[str, Any]:
         """Make a DELETE request to the Mouser API."""
-        self._set_api_key_header(endpoint)
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
-        response = self.session.delete(url, timeout=self.timeout)
+        # Add API key as query parameter
+        params = {"apiKey": self._get_api_key(endpoint)}
+
+        response = self.session.delete(url, params=params, timeout=self.timeout)
         response.raise_for_status()
         return response.json()
 
