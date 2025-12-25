@@ -137,7 +137,14 @@ Or with Docker:
 ### Running Tests
 
 ```bash
-uv run pytest -v
+# Run all tests (unit tests only, no API keys needed)
+uv run python -m pytest -v
+
+# Run integration tests (requires real Mouser API keys)
+uv run python -m pytest tests/test_search_integration.py -v -s
+
+# Run specific test
+uv run python -m pytest tests/test_search_integration.py::test_search_arduino_boards_integration -v -s
 ```
 
 ### Linting
@@ -152,6 +159,43 @@ uv run ruff format src/ tests/
 ```bash
 uv build
 ```
+
+## Troubleshooting
+
+### "Invalid unique identifier" Error
+
+**Problem**: When searching for parts, you get:
+```json
+{
+  "Errors": [{
+    "Code": "Invalid",
+    "Message": "Invalid unique identifier.",
+    "PropertyName": "API Key"
+  }]
+}
+```
+
+**Solution**: The API keys in your `.env` file are placeholders. You need to:
+1. Get real API keys from [Mouser API Hub](https://www.mouser.com/api-hub/)
+2. Update your `.env` file with the actual keys
+
+See [API_KEY_SETUP.md](./API_KEY_SETUP.md) for detailed instructions.
+
+### Rate Limit Errors
+
+If you see rate limit errors, wait at least 1 minute before retrying. Consider implementing:
+- Request throttling in your application
+- Caching of search results
+- Batch operations where possible
+
+### Empty Search Results
+
+If searches return no results:
+- Verify the part exists on [mouser.com](https://www.mouser.com)
+- Try broader search terms
+- Check for typos in part numbers
+
+For more troubleshooting help, see [INVESTIGATION_SUMMARY.md](./INVESTIGATION_SUMMARY.md)
 
 ## Docker Deployment
 

@@ -55,3 +55,7 @@ ignore = ["E501"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = [
+    "integration: marks tests as integration tests (require real API keys)",
+    "unit: marks tests as unit tests (no external dependencies)",
+]

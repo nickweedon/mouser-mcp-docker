@@ -70,7 +70,7 @@ class APIClient:
     def _get_api_key(self, endpoint: str) -> str:
         """Get the appropriate API key based on the endpoint."""
         # Search endpoints use part_api_key, everything else uses order_api_key
-        if "/search/" in endpoint:
+        if "search/" in endpoint or "/search/" in endpoint:
             return self.part_api_key
         else:
             # Cart, Order, OrderHistory use order key
@@ -92,7 +92,12 @@ class APIClient:
         """Make a POST request to the Mouser API."""
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
         # Add API key as query parameter
-        params = {"apiKey": self._get_api_key(endpoint)}
+        api_key = self._get_api_key(endpoint)
+        params = {"apiKey": api_key}
+
+        if self.debug:
+            import logging
+            logging.debug(f"POST {url} with apiKey={api_key[:8]}... (truncated)")
 
         response = self.session.post(url, params=params, json=json, timeout=self.timeout)
         response.raise_for_status()
